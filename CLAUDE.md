@@ -34,16 +34,16 @@ Every change must keep these true, or the deploy will break or the site will sho
 
 ## 3. Git workflow
 
-- Do not commit directly to `main` unless the collaborator explicitly says the change is ready for production. Work on a branch:
+- **Push directly to `main`. No branches or pull requests are needed.** Every push to `main` deploys to production, so be careful: only push work that runs.
+- Before each push, make sure the app starts locally and `GET /` returns 200 (section 2). Then:
   ```
-  git checkout -b short-descriptive-name
   git add <files>
   git commit -m "Clear message"
-  git push -u origin short-descriptive-name
+  git pull --rebase origin main
+  git push origin main
   ```
-  Then open a pull request into `main`. **Merging the PR is what deploys.**
-- Before pushing to or merging into `main`, make sure the app starts locally and `GET /` returns 200.
-- Commit small, focused changes with clear messages. Never force-push to `main`.
+  Run `git pull --rebase origin main` first so you never overwrite someone else's commits.
+- Commit small, focused changes with clear messages, so a bad one is easy to undo. Never force-push (`--force`) to `main`.
 - Authentication: the collaborator uses their own GitHub account (VS Code sign-in or `gh auth login`). Never ask for, store, or use anyone else's token, and never put a token in a remote URL or file in the repo.
 - To undo a bad deploy: `git revert <commit>` and push. The revert redeploys the previous behavior.
 
@@ -94,7 +94,7 @@ Always include: what you need, why, the exact values or names, and the commit SH
 - Do not try to SSH into any server, install Docker/Coolify, or touch AWS, DNS or GitHub settings.
 - Do not ask for, print, or commit credentials, `.pem` keys, tokens or `.env` contents.
 - Do not change the listening port, remove curl from the image, or break `GET /` without telling Mehdi first.
-- Do not force-push, rewrite `main` history, or delete branches you did not create.
+- Do not force-push or rewrite `main` history.
 - Do not push large binaries or build artifacts (`node_modules`, `.venv`, `__pycache__`, data dumps).
 
 ## 8. Current state of the repo
