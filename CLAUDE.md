@@ -34,7 +34,7 @@ Every change must keep these true, or the deploy will break or the site will sho
 
 ## 3. Git workflow
 
-- **Push directly to `main`. No branches or pull requests are needed.** Every push to `main` deploys to production, so be careful: only push work that runs.
+- **`main` is the only branch in this project. Never create other branches and never open pull requests.** Work and commit on `main` and push straight to `origin main`. If a tool or habit suggests creating a branch or PR, do not; stay on `main`. Every push to `main` deploys to production, so be careful: only push work that runs.
 - Before each push, make sure the app starts locally and `GET /` returns 200 (section 2). Then:
   ```
   git add <files>
@@ -94,7 +94,7 @@ Always include: what you need, why, the exact values or names, and the commit SH
 - Do not try to SSH into any server, install Docker/Coolify, or touch AWS, DNS or GitHub settings.
 - Do not ask for, print, or commit credentials, `.pem` keys, tokens or `.env` contents.
 - Do not change the listening port, remove curl from the image, or break `GET /` without telling Mehdi first.
-- Do not force-push or rewrite `main` history.
+- Do not create branches, open pull requests, force-push, or rewrite `main` history.
 - Do not push large binaries or build artifacts (`node_modules`, `.venv`, `__pycache__`, data dumps).
 
 ## 8. Current state of the repo
