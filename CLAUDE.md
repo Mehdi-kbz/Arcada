@@ -1,11 +1,11 @@
-# Arcana: instructions for Claude Code
+# Arcada: instructions for Claude Code
 
-You are working in the Arcana repo on behalf of a developer (the collaborator). The project owner and sole administrator is **Mehdi**. The collaborator can push code; Mehdi controls the servers, Coolify, DNS, secrets and GitHub settings. Read this whole file before doing anything that touches git, the Dockerfile, environment variables or deployment.
+You are working in the Arcada repo on behalf of a developer (the collaborator). The project owner and sole administrator is **Mehdi**. The collaborator can push code; Mehdi controls the servers, Coolify, DNS, secrets and GitHub settings. Read this whole file before doing anything that touches git, the Dockerfile, environment variables or deployment.
 
 ## 1. How this project is deployed
 
 ```
-collaborator's laptop --git push--> GitHub (Mehdi-kbz/Arcana, branch main)
+collaborator's laptop --git push--> GitHub (Mehdi-kbz/Arcada, branch main)
                                         |
                                   webhook (automatic)
                                         v
@@ -13,13 +13,13 @@ collaborator's laptop --git push--> GitHub (Mehdi-kbz/Arcana, branch main)
                                         |
                                   SSH + docker build
                                         v
-                      AWS EC2 server  -->  https://arcana.khabex.com
+                      AWS EC2 server  -->  https://arcada.khabex.com
 ```
 
 - **Pushing to `main` deploys to production automatically.** There is no staging environment and no manual approval step. A deploy takes about 1-2 minutes.
 - The app is built from the `Dockerfile` in the repo root and runs as a container on the **AWS EC2 server**. The code does not run on your machine in production and does not run on Mehdi's main VPS.
 - Coolify only orchestrates. It pulls the repo, builds the image on the EC2, starts the new container, waits for it to be ready, then removes the old one (rolling update). If the new container fails, the old one keeps serving.
-- Live URL: https://arcana.khabex.com (HTTPS certificate is automatic).
+- Live URL: https://arcada.khabex.com (HTTPS certificate is automatic).
 
 ## 2. Hard requirements for the app
 
@@ -52,7 +52,7 @@ Every change must keep these true, or the deploy will break or the site will sho
 You cannot see the Coolify dashboard. After a push to `main`, wait about 2 minutes, then check from the terminal:
 
 ```
-curl -s -i https://arcana.khabex.com/ | head -5
+curl -s -i https://arcada.khabex.com/ | head -5
 ```
 
 - `HTTP/2 200` and the expected body means the deploy worked.
@@ -77,14 +77,14 @@ Situations that need Mehdi, with example wording:
 
 | Situation | What to say |
 |---|---|
-| New or changed environment variable | "Tell Mehdi that Coolify needs the env var `DATABASE_URL` for the arcana app (value: ask the collaborator / not in the repo), then a redeploy." |
-| Deploy failed or site returns 503 for more than ~5 min | "Tell Mehdi that the deploy of commit `<sha>` is failing (arcana.khabex.com returns 503). Please check Deployment Logs and Runtime Logs for the arcana app in Coolify and send us the last ~30 lines." |
-| Need a database, Redis or persistent storage | "Tell Mehdi that arcana needs a `<Postgres/Redis/volume>`; please create it in Coolify on the AWS server and send the connection string/mount path." |
-| Need a new domain or subdomain | "Tell Mehdi that we need `<name>.khabex.com` pointed to the AWS server (A record to the EC2 IP) and added as a domain to the arcana app in Coolify." |
-| Need a different port, build command, base image rule, or healthcheck path | "Tell Mehdi that the Coolify setting `<setting>` for arcana must be changed to `<value>` because `<reason>`." |
-| Need to roll back and `git revert` is not enough, or restart/redeploy manually | "Tell Mehdi that arcana needs a manual redeploy/restart from Coolify." |
-| Out of memory during build (log shows `Killed` or exit code 137) | "Tell Mehdi that the arcana build ran out of memory on the AWS server; it needs swap added or a larger instance." |
-| Need to add a collaborator, change repo settings, branch protection, or webhooks | "Tell Mehdi that `<GitHub username>` needs access / that `<setting>` must change on the Mehdi-kbz/Arcana repo." |
+| New or changed environment variable | "Tell Mehdi that Coolify needs the env var `DATABASE_URL` for the arcada app (value: ask the collaborator / not in the repo), then a redeploy." |
+| Deploy failed or site returns 503 for more than ~5 min | "Tell Mehdi that the deploy of commit `<sha>` is failing (arcada.khabex.com returns 503). Please check Deployment Logs and Runtime Logs for the arcada app in Coolify and send us the last ~30 lines." |
+| Need a database, Redis or persistent storage | "Tell Mehdi that arcada needs a `<Postgres/Redis/volume>`; please create it in Coolify on the AWS server and send the connection string/mount path." |
+| Need a new domain or subdomain | "Tell Mehdi that we need `<name>.khabex.com` pointed to the AWS server (A record to the EC2 IP) and added as a domain to the arcada app in Coolify." |
+| Need a different port, build command, base image rule, or healthcheck path | "Tell Mehdi that the Coolify setting `<setting>` for arcada must be changed to `<value>` because `<reason>`." |
+| Need to roll back and `git revert` is not enough, or restart/redeploy manually | "Tell Mehdi that arcada needs a manual redeploy/restart from Coolify." |
+| Out of memory during build (log shows `Killed` or exit code 137) | "Tell Mehdi that the arcada build ran out of memory on the AWS server; it needs swap added or a larger instance." |
+| Need to add a collaborator, change repo settings, branch protection, or webhooks | "Tell Mehdi that `<GitHub username>` needs access / that `<setting>` must change on the Mehdi-kbz/Arcada repo." |
 | Anything involving SSH keys, certificates, Coolify accounts, AWS console | "Tell Mehdi that `<request>`." Do not attempt it yourself. |
 
 Always include: what you need, why, the exact values or names, and the commit SHA or error text when relevant. Keep it short enough to paste into a message.
@@ -99,7 +99,7 @@ Always include: what you need, why, the exact values or names, and the commit SH
 
 ## 8. Current state of the repo
 
-- `app.py`: placeholder server that answers "Arcana is live" on port 3000. Replace it with the real application; keep the rules in section 2.
+- `app.py`: placeholder server that answers "Arcada is live" on port 3000. Replace it with the real application; keep the rules in section 2.
 - `Dockerfile`: `python:3.12-slim` with curl installed. If the real app uses another stack (for example Node), update the Dockerfile accordingly and keep curl, port 3000, and a foreground process.
 - `README.md`: short human-facing workflow summary.
 - `.env.example`: names of environment variables the app reads (no values).

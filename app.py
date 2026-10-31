@@ -7,7 +7,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.end_headers()
-        self.wfile.write(b"Arcana is live\n")
+        self.wfile.write(b"Arcada is live\n")
 
 
 if __name__ == "__main__":
